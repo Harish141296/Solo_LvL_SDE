@@ -10,6 +10,7 @@ Commit + Push to GitHub.
 """
 
 def ask_name_and_age(name, age):
+    """Prints a greeting with the user's name and age."""
     print(f"Hello {name}, you are {age} years old.") 
 
 def iterate_number(n):
@@ -18,7 +19,11 @@ def iterate_number(n):
 # hello_harry.py
 def main():
     name = input("Enter your name: ")
-    age = int(input("Enter your age: "))
+    try:
+        age = int(input("Enter your age: "))
+    except Exception as e:
+        print(f"Value Error: {e}")
+        age = 0
     ask_name_and_age(name, age)
     iterate_number(10) 
 
