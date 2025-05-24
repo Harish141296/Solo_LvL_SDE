@@ -85,18 +85,18 @@ def main():
                 department = input("Please enter the department: ").strip()
                 empmaster.add_new_employee(id, name, age, department)
             
-            if user_input in ['view', '2']:
+            elif user_input in ['view', '2']:
                 empmaster.view_all_employee() 
             
-            if user_input in ['search', '3']:
+            elif user_input in ['search', '3']:
                 employee = input('Enter Employee Number: ')
                 empmaster.search_by_employee(employee)
             
-            if user_input in ['delete', '4']:
+            elif user_input in ['delete', '4']:
                 employee = input('Enter the Employee to delete: ')
                 empmaster.delete_by_employee(employee) 
 
-            if user_input in ['show', '5']:
+            elif user_input in ['show', '5']:
                 empmaster.dept_of_employee() 
 
     except Exception as e:
