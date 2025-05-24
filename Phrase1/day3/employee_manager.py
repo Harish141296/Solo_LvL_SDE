@@ -32,6 +32,14 @@ class EmployeeManager:
             return
         for emp in self.emp_detail:
             print(f"Employee: {emp}; name: {self.emp_detail[emp]['name']}; age: {self.emp_detail[emp]['age']}; dept: {self.emp_detail[emp]['dept']}") 
+
+    def view_all_employee_2(self):
+        """View all Employees details."""
+        print(f"{'ID':<10}{'Name':<15}{'Age':<5}{'Department'}")
+        print("-"*40)
+        for emp_id, info in self.emp_detail.items():
+            print(f"{emp_id:<10}{info['name']:<15}{info['age']:<5}{info['dept']}")
+
     def search_by_employee(self, employee):
         """Search Employee based on their ID."""
         if employee in self.emp_detail:
@@ -100,7 +108,7 @@ def main():
                 empmaster.dept_of_employee() 
 
     except Exception as e:
-        print("e")
+        print(f"Exception e: {e}")
     finally:            
         print("Thank you for using our EmployeeMaster System.")
 
