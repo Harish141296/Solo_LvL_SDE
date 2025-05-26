@@ -24,6 +24,15 @@ import pandas as pd
 import logging 
 import json 
 
+log_filepath = os.path.abspath(__file__)
+log_filename = os.path.basename(log_filepath).replace('.py','.log')
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename=os.path.join(log_filepath, log_filename),
+    filemode='a', # set the lowest level to capture
+    format='%(asctime)s - %(levelname)s - %(message)s' # Log Format
+)
+
 class EmployeeManager:
     def __init__(self):
         self.emp_detail = dict()
@@ -39,6 +48,7 @@ class EmployeeManager:
             return
         self.emp_detail[id] = {"name":name, "age": age, "dept":department}
         print("Employee Added Successfully.")
+        logging.info(f"Employee {id} Added Successfully.")
     
     def view_all_employee(self):
         """View All Employees in the system."""
@@ -47,6 +57,7 @@ class EmployeeManager:
             return
         for emp in self.emp_detail:
             print(f"Employee: {emp}; name: {self.emp_detail[emp]['name']}; age: {self.emp_detail[emp]['age']}; dept: {self.emp_detail[emp]['dept']}") 
+
     def search_by_employee(self, employee):
         """Search Employee based on their ID."""
         if employee in self.emp_detail:
@@ -59,8 +70,10 @@ class EmployeeManager:
         if employee in self.emp_detail:
             del self.emp_detail[employee]
             print(f"Employee {employee} successfully deleted from the system.")
+            logging.info(f"Employee {employee} successfully deleted from the system.")
         else:
             print(f"Employee {employee} doesn't exists.")
+            logging.info(f"Requested Employee {employee} doesn't exists.")
 
     def dept_of_employee(self):
         # grouped_emp_list = []
