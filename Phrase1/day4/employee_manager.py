@@ -36,7 +36,9 @@ logging.basicConfig(
 class EmployeeManager:
     def __init__(self):
         self.emp_detail = dict()
-        self.filepath = r"D:\harish\Solo_LvL_SDE\Phrase1\day4"
+        # self.filepath = r"D:\harish\Solo_LvL_SDE\Phrase1\day4"
+        self.filepath = os.path.dirname(os.path.abspath(__file__))
+        self.load_from_json()
 
     def add_new_employee(self, id, name, age, department):
         """Adding new employee into the system."""
@@ -48,6 +50,7 @@ class EmployeeManager:
             return
         self.emp_detail[id] = {"name":name, "age": age, "dept":department}
         print("Employee Added Successfully.")
+        print(f"\nTotal Employees: {len(self.emp_detail)}")
         logging.info(f"Employee {id} Added Successfully.")
     
     def view_all_employee(self):
@@ -76,6 +79,7 @@ class EmployeeManager:
             logging.info(f"Requested Employee {employee} doesn't exists.")
 
     def dept_of_employee(self):
+        """Group Employee based on the Department"""
         # grouped_emp_list = []
         dept_map = {}
         for employee in self.emp_detail:
@@ -85,6 +89,7 @@ class EmployeeManager:
             print(f"{dept} - {", ".join(dept_map[dept])}")
 
     def save_to_json(self):
+        """Save Data to JSON File Format"""
         filename = "employees.json"
         try:
             if self.emp_detail:
@@ -99,13 +104,14 @@ class EmployeeManager:
         return
 
     def save_to_txt(self):
+        """Save data to TXT File Format"""
         filename = "employees.txt"
         try:
             if self.emp_detail:
                 with open(os.path.join(self.filepath, filename), 'w') as file:
                 
                     for emp in self.emp_detail:
-                        file.write(f"EmployeeID: {emp}; name: {self.emp_detail[emp]['name']}; age: {self.emp_detail[emp]['name']}; dept: {self.emp_detail[emp]['dept']}")
+                        file.write(f"EmployeeID: {emp}; name: {self.emp_detail[emp]['name']}; age: {self.emp_detail[emp]['age']}; dept: {self.emp_detail[emp]['dept']}")
                         file.write('\n')
                     print("File saved as txt")
             else:
@@ -116,6 +122,7 @@ class EmployeeManager:
         
 
     def save_to_csv(self):
+        """Save data to CSV File Format"""
         filename = "employees.csv"
         try:
             if self.emp_detail:
@@ -142,6 +149,7 @@ class EmployeeManager:
         return
 
     def load_from_json(self):
+        """Loading data from JSON File"""
         filename = "employees.json"
         filepath = os.path.join(self.filepath, filename)
         if os.path.exists(filepath) and os.path.isfile(filepath):
