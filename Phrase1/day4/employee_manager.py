@@ -24,11 +24,10 @@ import pandas as pd
 import logging 
 import json 
 
-log_filepath = os.path.abspath(__file__)
-log_filename = os.path.basename(log_filepath).replace('.py','.log')
+log_filename = os.path.abspath(__file__).replace('.py','.log')
 logging.basicConfig(
     level=logging.DEBUG,
-    filename=os.path.join(log_filepath, log_filename),
+    filename=log_filename,
     filemode='a', # set the lowest level to capture
     format='%(asctime)s - %(levelname)s - %(message)s' # Log Format
 )
