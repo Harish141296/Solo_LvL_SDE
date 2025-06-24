@@ -4,17 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solo Leveling SDE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
-<body>
-    <h1>⚔️ Your Quests for Today ⚔️</h1>
-    <ul>
+<body class="container py-5">
+    <h1 class="text-center mb-4">⚔️ Your Quests for Today ⚔️</h1>
+    <div class="text-center mb-4">
+        <h5> Focus Time Today: <span id="timer">00:00:00</span></h5>
+        <button class="btn btn-success btn-sm" onclick="startTimer()">Start</button>
+        <button class="btn btn-danger btn-sm" onclick="stopTimer()">Stop</button>
+    </div>
+    <div class="text-center mb-4">
+        <h4>Progress: <strong>{{ completed_count }}</strong> / {{ total_count }} completed</h4>
+    </div>
+
+    <div class="list-group">
         {% for quest in quests %}
-        <li>
-            {{quest.title}} - {% if quest.is_completed %} ✅ {% else %} ❌ {% endif %}
-        </li>
+            <div class="list-group-item d-flex justify-content-between align-items-center {% if quest.is_completed %}list-group-item-success{% endif %}">
+                <span>{{ quest.title }}</span>
+                {% if not quest.is_completed %}
+                    <form action="{% url 'complete_quest' quest.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary btn-sm">Mark Done</button>
+                    </form>
+                {% else %}
+                    <span class="badge bg-success">Completed</span>
+                {% endif %}
+            </div>
         {% empty %}
-        <li>No quests for today yet. Go create some in admin panel...</li>
+            <div class="list-group-item">No quests for today.</div>
         {% endfor %}
-    </ul>
+    </div>
+
+<script>
+let totalSeconds = 0;
+let timerInterval = null;
+let lastActive = Date.now();
+
+function updateTimerDisplay() {
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    document.getElementById("timer").innerText = `${hours}:${minutes}:${seconds}`;
+}
+
+function startTimer() {
+    if (timerInterval) return;
+    timerInterval = setInterval(() => {
+        const now = Date.now();
+        if ((now - lastActive) < 1800000) {  // 30 min = 1800000 ms
+            totalSeconds++;
+            updateTimerDisplay();
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+// Track activity
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        lastActive = Date.now();
+    }
+});
+
+// Auto-start timer on load
+window.onload = () => {
+    lastActive = Date.now();
+    startTimer();
+};
+</script>
+
 </body>
 </html>
