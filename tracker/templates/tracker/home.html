@@ -37,7 +37,7 @@
     </div>
 
 <script>
-let totalSeconds = 0;
+let totalSeconds = parseInt(localStorage.getItem('focusSeconds') || '0');
 let timerInterval = null;
 let lastActive = Date.now();
 
@@ -52,8 +52,9 @@ function startTimer() {
     if (timerInterval) return;
     timerInterval = setInterval(() => {
         const now = Date.now();
-        if ((now - lastActive) < 1800000) {  // 30 min = 1800000 ms
+        if ((now - lastActive) < 1800000) {  // 30 minutes
             totalSeconds++;
+            localStorage.setItem('focusSeconds', totalSeconds);
             updateTimerDisplay();
         }
     }, 1000);
@@ -64,16 +65,17 @@ function stopTimer() {
     timerInterval = null;
 }
 
-// Track activity
+// Track if tab is visible
 document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
         lastActive = Date.now();
     }
 });
 
-// Auto-start timer on load
+// Restore from localStorage on load
 window.onload = () => {
     lastActive = Date.now();
+    updateTimerDisplay();
     startTimer();
 };
 </script>

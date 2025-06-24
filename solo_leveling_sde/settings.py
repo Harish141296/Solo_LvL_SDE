@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 TIME_ZONE = 'Asia/Kolkata'
-USE_TZ = True
+USE_TZ = False
 
 from pathlib import Path
 
