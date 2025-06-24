@@ -6,7 +6,15 @@
     <title>Solo Leveling SDE</title>
 </head>
 <body>
-    <h1>⚔️ Welcome to the Training Dashboard ⚔️</h1>
-    <p> Lets Begin your daily quest...</p>
+    <h1>⚔️ Your Quests for Today ⚔️</h1>
+    <ul>
+        {% for quest in quests %}
+        <li>
+            {{quest.title}} - {% if quest.is_completed %} ✅ {% else %} ❌ {% endif %}
+        </li>
+        {% empty %}
+        <li>No quests for today yet. Go create some in admin panel...</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

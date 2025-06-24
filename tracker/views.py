@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from .models import Quest 
+from django.utils import timezone 
 
-# Create your views here.
 def home(request):
-    return render(request, 'tracker/home.html')
+    today = timezone.now().date()
+    quests = Quest.objects.filter(date=today)
+    return render(request, 'tracker/home.html', {'quests': quests})
