@@ -60,9 +60,22 @@ function startTimer() {
     }, 1000);
 }
 
+function saveFocusTime() {
+    fetch("{% url 'save_focus_time' %}", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ seconds: totalSeconds })
+    })
+    .then(response => response.json())
+    .then(data => console.log('Saved:', data)); }
+
 function stopTimer() {
     clearInterval(timerInterval);
     timerInterval = null;
+    saveFocusTime(); // Save to backend
 }
 
 // Track if tab is visible
