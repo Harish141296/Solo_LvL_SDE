@@ -11,6 +11,11 @@
     <h1 class="text-center mb-4">⚔️ Your Quests for Today ⚔️</h1>
     <div class="text-center mb-4">
         <h5> Focus Time Today: <span id="timer">00:00:00</span></h5>
+        {% if reward_tip %}
+        <div class="alert alert-success mt-3">
+            <strong>  🎁 Unlocked Reward:</strong> {{ reward_tip }}
+        </div>
+        {% endif %}
         <button class="btn btn-success btn-sm" onclick="startTimer()">Start</button>
         <button class="btn btn-danger btn-sm" onclick="stopTimer()">Stop</button>
     </div>
@@ -35,6 +40,28 @@
             <div class="list-group-item">No quests for today.</div>
         {% endfor %}
     </div>
+    <canvas id="focusChart" width="400" height="150"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const chartData = {{ focus_time_data|safe }}; 
+    const ctx = document.getElementById('focusChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: chartData.map(row => row.date),
+            datasets: [{
+                label: 'Minutes Focused',
+                data: chartData.map(row => row.minutes),
+                backgroundColor: 'rgba(54, 162, 235, 0.7)'
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
 
 <script>
 let totalSeconds = parseInt(localStorage.getItem('focusSeconds') || '0');

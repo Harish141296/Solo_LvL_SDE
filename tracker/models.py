@@ -8,6 +8,13 @@ class DailyFocusTime(models.Model):
     def __str__(self):
         return f"{self.date} - {self.seconds_spend} seconds"
     
+class PenaltyMode(models.Model):
+    date = models.DateField(default=timezone.now, unique = True)
+    is_triggered = models.BooleanField(default=False)
+    triggered_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.date}-{'Active' if self.is_triggered else 'Clear'}"
 class Quest(models.Model):
     title = models.CharField(max_length = 200)
     description = models.TextField(blank = True)
